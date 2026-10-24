@@ -24,12 +24,25 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url, "http://localhost");
 
   if (req.method === "GET" && url.pathname === "/") {
-    return send(res, 200, {
-      ok: true,
-      service: "Zalo OA webhook receiver",
-      webhookPath: "/webhook",
-      note: "Use the HTTPS /webhook URL in Zalo OA app settings."
+    // Zalo domain ownership verification meta tag. Keep this in the homepage <head>.
+    res.writeHead(200, {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "no-store"
     });
+    return res.end(`<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="zalo-platform-site-verification" content="S8wxCOMm4GXoeSCgigTC25IgtIYutOPrCZ8q" />
+  <title>Zalo OA Webhook</title>
+</head>
+<body>
+  <h1>Zalo OA webhook receiver</h1>
+  <p>Service is running. Webhook endpoint: <code>/webhook</code></p>
+  <p>Health check: <a href="/health">/health</a></p>
+</body>
+</html>`);
   }
 
   if (req.method === "GET" && url.pathname === "/health") {
@@ -93,3 +106,4 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`Webhook server listening on port ${PORT}`);
 });
+                                                            
