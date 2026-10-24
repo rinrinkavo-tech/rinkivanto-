@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: zalo-oa-webhook
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
