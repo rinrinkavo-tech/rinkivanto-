@@ -4,6 +4,12 @@ const crypto = require("crypto");
 const PORT = Number(process.env.PORT || 3000);
 const WEBHOOK_SECRET = process.env.ZALO_OA_SECRET_KEY || "";
 const APP_ID = process.env.ZALO_APP_ID || "";
+// Paste the exact verification token shown by Zalo for the domain you are verifying.
+const ZALO_VERIFY_TOKEN = process.env.ZALO_VERIFY_TOKEN || "";
+
+function escapeHtml(value) {
+  return String(value).replace(/&/g, "&amp;").replace(/\"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
 function send(res, status, body) {
   res.writeHead(status, {
@@ -106,4 +112,4 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`Webhook server listening on port ${PORT}`);
 });
-                                                            
+    
